@@ -65,6 +65,24 @@
     .title-text {
       flex-grow: 1;
     }
+    .last-modified {
+      font-size: 8pt;
+      color: #FF69B4;
+      margin-left: 8px;
+    }
+    /* 제목 색상 클래스 */
+    .color-hotpink {
+      color: #FF69B4;
+    }
+    .color-orange {
+      color: #FF8C00;
+    }
+    .color-blue {
+      color: #1E90FF;
+    }
+    .color-red {
+      color: #FF0000;
+    }
     .progress-details {
       display: flex;
       justify-content: space-between;
@@ -113,7 +131,7 @@
       margin-bottom: 5px;
       font-weight: bold;
     }
-    input, button {
+    input, button, select {
       width: 100%;
       padding: 10px;
       border: 1px solid #ddd;
@@ -156,6 +174,35 @@
     .admin-panel h2 {
       margin-top: 0;
     }
+    .color-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .color-option {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+    .color-option.selected {
+      box-shadow: 0 0 0 3px #333;
+    }
+    .color-hotpink-bg {
+      background-color: #FF69B4;
+    }
+    .color-orange-bg {
+      background-color: #FF8C00;
+    }
+    .color-blue-bg {
+      background-color: #1E90FF;
+    }
+    .color-red-bg {
+      background-color: #FF0000;
+    }
   </style>
 </head>
 <body>
@@ -192,12 +239,22 @@
           <input type="text" id="edit-title">
         </div>
         <div class="form-group">
+          <label for="edit-color">제목 색상:</label>
+          <select id="edit-color">
+            <option value="">기본색</option>
+            <option value="hotpink">핫핑크</option>
+            <option value="orange">오렌지</option>
+            <option value="blue">파랑</option>
+            <option value="red">빨강</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="edit-current">현재 달성 횟수:</label>
           <input type="number" id="edit-current" min="0">
         </div>
         <div class="form-group">
           <label for="edit-total">전체 목표 횟수:</label>
-          <input type="number" id="edit-total" min="1" max="100">
+          <input type="number" id="edit-total" min="1" max="1000">
         </div>
         <button id="save-edit-btn">저장</button>
         <button id="cancel-edit-btn" style="background-color: #f44336; margin-top: 5px;">취소</button>
@@ -210,12 +267,22 @@
           <input type="text" id="goal-title" placeholder="목표의 제목을 입력하세요">
         </div>
         <div class="form-group">
+          <label for="goal-color">제목 색상:</label>
+          <div class="color-selector">
+            <div class="color-option color-hotpink-bg" data-color="hotpink">핫핑크</div>
+            <div class="color-option color-orange-bg" data-color="orange">오렌지</div>
+            <div class="color-option color-blue-bg" data-color="blue">파랑</div>
+            <div class="color-option color-red-bg" data-color="red">빨강</div>
+          </div>
+          <input type="hidden" id="goal-color" value="">
+        </div>
+        <div class="form-group">
           <label for="current-count">현재 달성 횟수:</label>
           <input type="number" id="current-count" min="0" value="0">
         </div>
         <div class="form-group">
           <label for="total-count">전체 목표 횟수:</label>
-          <input type="number" id="total-count" min="1" max="100" value="10">
+          <input type="number" id="total-count" min="1" max="1000" value="10">
         </div>
         <button id="add-goal-btn">목표 추가</button>
       </div>
@@ -247,11 +314,13 @@
     const saveEditBtn = document.getElementById('save-edit-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
     const statusContainer = document.getElementById('status-container');
+    const colorOptions = document.querySelectorAll('.color-option');
 
     // 전역 데이터
     let goals = [];
     let currentEditId = null;
     let currentTitleEditId = null;
+    let selectedColor = "";
 
     // 초기화
     function init() {
@@ -264,6 +333,16 @@
       addGoalBtn.addEventListener('click', addGoal);
       saveEditBtn.addEventListener('click', saveEdit);
       cancelEditBtn.addEventListener('click', cancelEdit);
+      
+      // 색상 선택 이벤트
+      colorOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          colorOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          selectedColor = this.dataset.color;
+          document.getElementById('goal-color').value = selectedColor;
+        });
+      });
       
       // 엔터 키로 로그인
       document.getElementById('password').addEventListener('keypress', function(e) {
@@ -420,7 +499,20 @@
           // 일반 모드
           const titleTextSpan = document.createElement('span');
           titleTextSpan.className = 'title-text';
+          if (goal.color) {
+            titleTextSpan.classList.add(`color-${goal.color}`);
+          }
           titleTextSpan.textContent = goal.title;
+          
+          // 마지막 수정 날짜 표시
+          if (goal.lastModified) {
+            const lastModifiedSpan = document.createElement('span');
+            lastModifiedSpan.className = 'last-modified';
+            const date = new Date(goal.lastModified);
+            const formattedDate = `${date.getFullYear().toString().substr(2)}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
+            lastModifiedSpan.textContent = formattedDate;
+            titleTextSpan.appendChild(lastModifiedSpan);
+          }
           titleElement.appendChild(titleTextSpan);
           
           // 관리자 모드일 때만 "제목 수정" 버튼
@@ -511,6 +603,7 @@
       const goalIndex = goals.findIndex(g => g.id === id);
       if (goalIndex >= 0) {
         goals[goalIndex].title = newTitle;
+        goals[goalIndex].lastModified = new Date().toISOString();
         saveGoals();
       }
       currentTitleEditId = null;
@@ -524,6 +617,7 @@
     // 목표 추가
     function addGoal() {
       const title = document.getElementById('goal-title').value.trim();
+      const color = document.getElementById('goal-color').value;
       const current = parseInt(document.getElementById('current-count').value);
       const total = parseInt(document.getElementById('total-count').value);
       if (!title) {
@@ -534,8 +628,8 @@
         alert('유효한 숫자를 입력하세요.');
         return;
       }
-      if (total > 100) {
-        alert('전체 목표 횟수는 100을 초과할 수 없습니다.');
+      if (total > 1000) {
+        alert('전체 목표 횟수는 1000을 초과할 수 없습니다.');
         return;
       }
       if (current > total) {
@@ -543,12 +637,16 @@
         return;
       }
       const newId = goals.length > 0 ? Math.max(...goals.map(g => g.id)) + 1 : 1;
-      goals.push({ id: newId, title, current, total });
+      const lastModified = new Date().toISOString();
+      goals.push({ id: newId, title, color, current, total, lastModified });
       saveGoals();
       renderGoals();
       document.getElementById('goal-title').value = '';
+      document.getElementById('goal-color').value = '';
       document.getElementById('current-count').value = '0';
       document.getElementById('total-count').value = '10';
+      selectedColor = "";
+      colorOptions.forEach(opt => opt.classList.remove('selected'));
     }
 
     // 목표 삭제
@@ -566,6 +664,7 @@
       if (!goal) return;
       currentEditId = id;
       document.getElementById('edit-title').value = goal.title;
+      document.getElementById('edit-color').value = goal.color || "";
       document.getElementById('edit-current').value = goal.current;
       document.getElementById('edit-total').value = goal.total;
       editForm.classList.remove('hidden');
@@ -575,6 +674,7 @@
     function saveEdit() {
       if (currentEditId === null) return;
       const title = document.getElementById('edit-title').value.trim();
+      const color = document.getElementById('edit-color').value;
       const current = parseInt(document.getElementById('edit-current').value);
       const total = parseInt(document.getElementById('edit-total').value);
       if (!title) {
@@ -585,8 +685,8 @@
         alert('유효한 숫자를 입력하세요.');
         return;
       }
-      if (total > 100) {
-        alert('전체 목표 횟수는 100을 초과할 수 없습니다.');
+      if (total > 1000) {
+        alert('전체 목표 횟수는 1000을 초과할 수 없습니다.');
         return;
       }
       if (current > total) {
@@ -595,7 +695,8 @@
       }
       const goalIndex = goals.findIndex(g => g.id === currentEditId);
       if (goalIndex >= 0) {
-        goals[goalIndex] = { id: currentEditId, title, current, total };
+        const lastModified = new Date().toISOString();
+        goals[goalIndex] = { id: currentEditId, title, color, current, total, lastModified };
         saveGoals();
         renderGoals();
         cancelEdit();

@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080; // 3000에서 8080으로 포트 변경
 
 // JSON 파싱 미들웨어
 app.use(express.json());
@@ -22,8 +22,8 @@ if (!fs.existsSync(dataDir)) {
 // goals.json 파일이 없으면 초기 데이터로 생성
 if (!fs.existsSync(goalsFilePath)) {
   const initialData = [
-    { id: 1, title: "주 3회 운동하기", current: 2, total: 3 },
-    { id: 2, title: "한달 독서 목표", current: 3, total: 10 }
+    { id: 1, title: "주 3회 운동하기", current: 2, total: 3, lastModified: new Date().toISOString() },
+    { id: 2, title: "한달 독서 목표", current: 3, total: 10, lastModified: new Date().toISOString() }
   ];
   fs.writeFileSync(goalsFilePath, JSON.stringify(initialData, null, 2), 'utf8');
 }
