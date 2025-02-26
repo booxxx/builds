@@ -1,7 +1,7 @@
 {
   "name": "progress-bar-admin",
   "version": "1.0.0",
-  "description": "관리자 로그인이 필요한 프로그래스 바 애플리케이션",
+  "description": "진행률 표시 애플리케이션",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"

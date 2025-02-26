@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>목표 진행 상황</title>
-  <style>
-    body {
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>목표 진행 상황</title>
+    <style>
+
+  body {
       margin: 0;
       padding: 20px;
       background-color: #f5f5f5;
@@ -14,21 +16,19 @@
       justify-content: center;
     }
     .container {
-      width: 600px; /* 필요에 따라 조절 */
+      width: 600px;
       background-color: white;
       border-radius: 8px;
-      padding: 20px 20px 40px; /* 하단 여유 공간 추가 */
+      padding: 20px 20px 40px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      position: relative; /* 로그인 버튼을 오른쪽 상단에 배치하기 위해 사용 */
+      position: relative;
     }
-
-    /* 상단 헤더 스타일: 제목 중앙, 로그인 버튼 오른쪽 */
     .header {
       display: flex;
       align-items: center;
-      justify-content: center; /* 제목을 수평 중앙 정렬 */
+      justify-content: center;
       margin-bottom: 30px;
-      position: relative; /* 버튼 절대 배치를 위해 필요 */
+      position: relative;
     }
     .header h1 {
       margin: 0;
@@ -45,14 +45,14 @@
       font-size: 14px;
       cursor: pointer;
     }
-
-    /* 각 목표의 카드(진행 상황) 스타일 */
     .progress-container {
       margin-bottom: 20px;
       padding: 15px;
+      padding-bottom: 35px;
       border-radius: 8px;
       background-color: #f9f9f9;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
     .progress-title {
       font-size: 16px;
@@ -70,7 +70,6 @@
       color: #FF69B4;
       margin-left: 8px;
     }
-    /* 제목 색상 클래스 */
     .color-hotpink {
       color: #FF69B4;
     }
@@ -111,8 +110,281 @@
       line-height: 25px;
       font-size: 13px;
     }
+    .marker-container {
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      bottom: 10px;
+      height: 20px;
+      pointer-events: none;
+    }
+    /* 새로 추가된 마커 관련 스타일 */
+    .marker-wrapper {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .modification-marker {
+      position: absolute;
+      width: 2px;
+      height: 8px;
+      background-color: #ff3333;
+      transform: translateX(-50%);
+    }
+    .marker-delete-btn {
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 16px;
+      height: 16px;
+      background-color: #ff3333;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 10px;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      padding: 0;
+      margin: 0;
+    }
+    .modification-marker:hover .marker-delete-btn {
+      display: block;
+    }
+    .marker-date {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      color: #666;
+      white-space: nowrap;
+    }
+    .login-container, .admin-panel {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .hidden {
+      display: none;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #90CAF9;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #64B5F6;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+    .status-message {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .success {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    .error-message {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    .admin-panel button {
+      width: auto;
+      margin-top: 5px;
+    }
+    .admin-panel h2 {
+      margin-top: 0;
+    }
+    .color-selector {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .color-option {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+    }
+    .color-option.selected {
+      box-shadow: 0 0 0 3px #333;
+    }
+    .color-hotpink-bg {
+      background-color: #FF69B4;
+    }
+    .color-orange-bg {
+      background-color: #FF8C00;
+    }
+    .color-blue-bg {
+      background-color: #1E90FF;
+    }
+    .color-red-bg {
+      background-color: #FF0000;
+    }
+      </style>
+</head>
 
-    /* 로그인/관리자 패널 스타일 */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>목표 진행 상황</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      width: 600px;
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px 20px 40px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    #show-login-btn {
+      position: absolute;
+      right: 0;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .progress-container {
+      margin-bottom: 20px;
+      padding: 15px;
+      padding-bottom: 35px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .progress-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title-text {
+      flex-grow: 1;
+    }
+    .last-modified {
+      font-size: 8pt;
+      color: #FF69B4;
+      margin-left: 8px;
+    }
+    .color-hotpink {
+      color: #FF69B4;
+    }
+    .color-orange {
+      color: #FF8C00;
+    }
+    .color-blue {
+      color: #1E90FF;
+    }
+    .color-red {
+      color: #FF0000;
+    }
+    .progress-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .progress-bar {
+      height: 25px;
+      background-color: #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: #90CAF9;
+      border-radius: 12px;
+      transition: width 0.5s ease-in-out;
+    }
+    .progress-text {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      color: #333;
+      font-weight: bold;
+      line-height: 25px;
+      font-size: 13px;
+    }
+    .marker-container {
+      position: absolute;
+      left: 15px;
+      right: 15px;
+      bottom: 10px;
+      height: 20px;
+      pointer-events: none;
+    }
+    .modification-marker {
+      position: absolute;
+      width: 2px;
+      height: 8px;
+      background-color: #ff3333;
+      transform: translateX(-50%);
+    }
+    .marker-date {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      color: #666;
+      white-space: nowrap;
+    }
     .login-container, .admin-panel {
       background-color: white;
       border-radius: 8px;
@@ -207,16 +479,13 @@
 </head>
 <body>
   <div class="container">
-    <!-- 헤더: 제목 가운데, 로그인 버튼은 오른쪽 -->
     <div class="header">
       <h1>목표 진행 상황</h1>
       <button id="show-login-btn">관리자 로그인</button>
     </div>
 
-    <!-- 목표 목록 영역 -->
     <div id="goals-container"></div>
     
-    <!-- 로그인 패널 -->
     <div id="login-container" class="login-container hidden">
       <h2>관리자 로그인</h2>
       <div class="form-group">
@@ -228,7 +497,6 @@
       <p id="login-error" class="error hidden">비밀번호가 올바르지 않습니다.</p>
     </div>
     
-    <!-- 관리자 기능 패널 -->
     <div id="admin-panel" class="admin-panel hidden">
       <h2>목표 관리</h2>
       
@@ -292,14 +560,8 @@
       <button id="logout-btn" style="background-color: #f44336; margin-top: 20px;">로그아웃</button>
     </div>
   </div>
-
-  <script>
-    /* ======== 기존 JS 로직 그대로 유지, 스타일/배치만 변경 ======== */
-
-    // 관리자 비밀번호
+<script>
     const ADMIN_PASSWORD = "2931825";
-
-    // DOM 요소
     const goalsContainer = document.getElementById('goals-container');
     const loginContainer = document.getElementById('login-container');
     const adminPanel = document.getElementById('admin-panel');
@@ -316,16 +578,13 @@
     const statusContainer = document.getElementById('status-container');
     const colorOptions = document.querySelectorAll('.color-option');
 
-    // 전역 데이터
     let goals = [];
     let currentEditId = null;
     let currentTitleEditId = null;
     let selectedColor = "";
 
-    // 초기화
     function init() {
       loadGoals();
-      // 이벤트 등록
       showLoginBtn.addEventListener('click', showLogin);
       loginBtn.addEventListener('click', attemptLogin);
       cancelLoginBtn.addEventListener('click', hideLogin);
@@ -334,7 +593,6 @@
       saveEditBtn.addEventListener('click', saveEdit);
       cancelEditBtn.addEventListener('click', cancelEdit);
       
-      // 색상 선택 이벤트
       colorOptions.forEach(option => {
         option.addEventListener('click', function() {
           colorOptions.forEach(opt => opt.classList.remove('selected'));
@@ -344,7 +602,6 @@
         });
       });
       
-      // 엔터 키로 로그인
       document.getElementById('password').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           attemptLogin();
@@ -352,27 +609,22 @@
       });
     }
 
-    // 로그인 상태 확인
     function isLoggedIn() {
       return sessionStorage.getItem('adminLoggedIn') === 'true';
     }
 
-    // 로그인 폼 표시
     function showLogin() {
       showLoginBtn.classList.add('hidden');
       loginContainer.classList.remove('hidden');
     }
 
-    // 로그인 폼 숨기기
     function hideLogin() {
       loginContainer.classList.add('hidden');
       showLoginBtn.classList.remove('hidden');
       loginError.classList.add('hidden');
       document.getElementById('password').value = '';
     }
-
-    // 로그인 시도
-    function attemptLogin() {
+function attemptLogin() {
       const password = document.getElementById('password').value;
       if (password === ADMIN_PASSWORD) {
         sessionStorage.setItem('adminLoggedIn', 'true');
@@ -386,7 +638,6 @@
       }
     }
 
-    // 로그아웃
     function logout() {
       sessionStorage.removeItem('adminLoggedIn');
       adminPanel.classList.add('hidden');
@@ -394,7 +645,6 @@
       renderGoals();
     }
 
-    // 목표 데이터 로드
     function loadGoals() {
       fetch('/api/goals')
         .then(response => {
@@ -409,7 +659,6 @@
         })
         .catch(error => {
           console.error('데이터 로딩 에러:', error);
-          // 통신 실패 시 기본 데이터 사용
           goals = [
             { id: 1, title: "주 3회 운동하기", current: 2, total: 3 },
             { id: 2, title: "한달 독서 목표", current: 3, total: 10 }
@@ -418,7 +667,6 @@
         });
     }
 
-    // 목표 데이터 저장
     function saveGoals() {
       fetch('/api/goals', {
         method: 'POST',
@@ -444,7 +692,6 @@
       });
     }
 
-    // 상태 메시지 표시
     function showStatus(message, isError = false) {
       const statusElement = document.createElement('div');
       statusElement.className = `status-message ${isError ? 'error-message' : 'success'}`;
@@ -456,26 +703,23 @@
       }, 3000);
     }
 
-    // 목표 렌더링
     function renderGoals() {
       goalsContainer.innerHTML = '';
       if (goals.length === 0) {
         goalsContainer.innerHTML = '<p style="text-align: center; padding: 20px;">등록된 목표가 없습니다.</p>';
         return;
       }
-      goals.forEach(goal => {
+goals.forEach(goal => {
         const percent = Math.round((goal.current / goal.total) * 100);
         
         const progressContainer = document.createElement('div');
         progressContainer.className = 'progress-container';
         progressContainer.dataset.id = goal.id;
         
-        // 제목 영역
         const titleElement = document.createElement('div');
         titleElement.className = 'progress-title';
         
         if (currentTitleEditId === goal.id) {
-          // 제목 수정 모드
           const titleInput = document.createElement('input');
           titleInput.type = 'text';
           titleInput.className = 'title-edit-input';
@@ -496,7 +740,6 @@
           titleElement.appendChild(saveButton);
           titleElement.appendChild(cancelButton);
         } else {
-          // 일반 모드
           const titleTextSpan = document.createElement('span');
           titleTextSpan.className = 'title-text';
           if (goal.color) {
@@ -504,7 +747,6 @@
           }
           titleTextSpan.textContent = goal.title;
           
-          // 마지막 수정 날짜 표시
           if (goal.lastModified) {
             const lastModifiedSpan = document.createElement('span');
             lastModifiedSpan.className = 'last-modified';
@@ -515,7 +757,6 @@
           }
           titleElement.appendChild(titleTextSpan);
           
-          // 관리자 모드일 때만 "제목 수정" 버튼
           if (isLoggedIn()) {
             const editTitleButton = document.createElement('button');
             editTitleButton.textContent = '제목 수정';
@@ -525,7 +766,6 @@
           }
         }
         
-        // 진행도 텍스트
         const detailsElement = document.createElement('div');
         detailsElement.className = 'progress-details';
         detailsElement.innerHTML = `
@@ -533,7 +773,6 @@
           <span>${percent}%</span>
         `;
         
-        // 진행 바
         const progressBarElement = document.createElement('div');
         progressBarElement.className = 'progress-bar';
         
@@ -551,8 +790,29 @@
         progressContainer.appendChild(titleElement);
         progressContainer.appendChild(detailsElement);
         progressContainer.appendChild(progressBarElement);
+
+        // 수정 이력 마커 추가
+        if (goal.modificationHistory && goal.modificationHistory.length > 0) {
+          const markerContainer = document.createElement('div');
+          markerContainer.className = 'marker-container';
+          
+          goal.modificationHistory.forEach(mod => {
+            const marker = document.createElement('div');
+            marker.className = 'modification-marker';
+            marker.style.left = `${mod.index}%`;
+            
+            const date = document.createElement('div');
+            date.className = 'marker-date';
+            const modDate = new Date(mod.date);
+            date.textContent = `${(modDate.getMonth() + 1).toString().padStart(2, '0')}/${modDate.getDate().toString().padStart(2, '0')}`;
+            
+            marker.appendChild(date);
+            markerContainer.appendChild(marker);
+          });
+          
+          progressContainer.appendChild(markerContainer);
+        }
         
-        // 관리자 모드에서만 수정/삭제 버튼
         if (isLoggedIn()) {
           const actionButtons = document.createElement('div');
           actionButtons.style.marginTop = '10px';
@@ -580,7 +840,6 @@
       });
     }
 
-    // 목표 제목 수정(개별)
     function startTitleEdit(id) {
       currentTitleEditId = id;
       renderGoals();
@@ -592,34 +851,39 @@
         }
       }, 10);
     }
+
     function saveTitleEdit(id) {
       const input = document.getElementById(`title-input-${id}`);
       if (!input) return;
+      
       const newTitle = input.value.trim();
       if (!newTitle) {
         alert('목표 제목은 비워둘 수 없습니다.');
         return;
       }
+
       const goalIndex = goals.findIndex(g => g.id === id);
       if (goalIndex >= 0) {
         goals[goalIndex].title = newTitle;
         goals[goalIndex].lastModified = new Date().toISOString();
         saveGoals();
       }
+
       currentTitleEditId = null;
       renderGoals();
     }
+
     function cancelTitleEdit() {
       currentTitleEditId = null;
       renderGoals();
     }
 
-    // 목표 추가
     function addGoal() {
       const title = document.getElementById('goal-title').value.trim();
       const color = document.getElementById('goal-color').value;
       const current = parseInt(document.getElementById('current-count').value);
       const total = parseInt(document.getElementById('total-count').value);
+
       if (!title) {
         alert('목표 제목을 입력하세요.');
         return;
@@ -636,11 +900,28 @@
         alert('현재 달성 횟수는 전체 목표 횟수보다 클 수 없습니다.');
         return;
       }
+
       const newId = goals.length > 0 ? Math.max(...goals.map(g => g.id)) + 1 : 1;
       const lastModified = new Date().toISOString();
-      goals.push({ id: newId, title, color, current, total, lastModified });
+      const percent = Math.round((current / total) * 100);
+
+      goals.push({
+        id: newId,
+        title,
+        color,
+        current,
+        total,
+        lastModified,
+        modificationHistory: [{
+          date: lastModified,
+          index: percent,
+          value: current
+        }]
+      });
+
       saveGoals();
       renderGoals();
+
       document.getElementById('goal-title').value = '';
       document.getElementById('goal-color').value = '';
       document.getElementById('current-count').value = '0';
@@ -649,7 +930,6 @@
       colorOptions.forEach(opt => opt.classList.remove('selected'));
     }
 
-    // 목표 삭제
     function deleteGoal(id) {
       if (confirm('정말로 이 목표를 삭제하시겠습니까?')) {
         goals = goals.filter(goal => goal.id !== id);
@@ -658,25 +938,28 @@
       }
     }
 
-    // 수정 시작
     function startEdit(id) {
       const goal = goals.find(g => g.id === id);
       if (!goal) return;
+      
       currentEditId = id;
       document.getElementById('edit-title').value = goal.title;
       document.getElementById('edit-color').value = goal.color || "";
       document.getElementById('edit-current').value = goal.current;
       document.getElementById('edit-total').value = goal.total;
+      
       editForm.classList.remove('hidden');
       addForm.classList.add('hidden');
     }
-    // 수정 저장
+
     function saveEdit() {
       if (currentEditId === null) return;
+      
       const title = document.getElementById('edit-title').value.trim();
       const color = document.getElementById('edit-color').value;
       const current = parseInt(document.getElementById('edit-current').value);
       const total = parseInt(document.getElementById('edit-total').value);
+
       if (!title) {
         alert('목표 제목을 입력하세요.');
         return;
@@ -693,16 +976,38 @@
         alert('현재 달성 횟수는 전체 목표 횟수보다 클 수 없습니다.');
         return;
       }
+
       const goalIndex = goals.findIndex(g => g.id === currentEditId);
       if (goalIndex >= 0) {
+        const percent = Math.round((current / total) * 100);
         const lastModified = new Date().toISOString();
-        goals[goalIndex] = { id: currentEditId, title, color, current, total, lastModified };
+
+        // 수정 이력 추가
+        if (!goals[goalIndex].modificationHistory) {
+          goals[goalIndex].modificationHistory = [];
+        }
+        
+        goals[goalIndex].modificationHistory.push({
+          date: lastModified,
+          index: percent,
+          value: current
+        });
+
+        goals[goalIndex] = {
+          ...goals[goalIndex],
+          title,
+          color,
+          current,
+          total,
+          lastModified
+        };
+        
         saveGoals();
         renderGoals();
         cancelEdit();
       }
     }
-    // 수정 취소
+
     function cancelEdit() {
       currentEditId = null;
       editForm.classList.add('hidden');
@@ -711,7 +1016,6 @@
 
     document.addEventListener('DOMContentLoaded', init);
 
-    // 이미 로그인 상태라면 바로 관리자 패널 보이기
     if (isLoggedIn()) {
       showLoginBtn.classList.add('hidden');
       adminPanel.classList.remove('hidden');

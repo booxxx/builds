@@ -2,20 +2,46 @@
   {
     "id": 1,
     "title": "🫠쉐이더그래프 5분 필기",
-    "current": 9,
+    "current": 10,
     "total": 24,
-    "lastModified": "2025-02-25T10:53:47.869Z"
+    "lastModified": "2025-02-26T13:23:27.099Z",
+    "modificationHistory": [
+      {
+        "date": "2025-02-23T10:53:47.869Z",
+        "index": 25,
+        "value": 6
+      },
+      {
+        "date": "2025-02-24T15:30:00.000Z",
+        "index": 33,
+        "value": 8
+      },
+      {
+        "date": "2025-02-25T10:53:47.869Z",
+        "index": 37,
+        "value": 9
+      },
+      {
+        "date": "2025-02-26T13:23:27.099Z",
+        "index": 42,
+        "value": 10
+      }
+    ],
+    "color": ""
   },
   {
     "id": 2,
     "title": "🥰책 5페이지 읽기",
-    "current": 1,
-    "total": 100
-  },
-  {
-    "id": 3,
-    "title": "🩷SD캐릭터 만들기 얼마나 걸렸나 기록",
-    "current": 0,
-    "total": 100
+    "color": "orange",
+    "current": 22,
+    "total": 503,
+    "lastModified": "2025-02-26T15:10:56.530Z",
+    "modificationHistory": [
+      {
+        "date": "2025-02-26T15:10:56.530Z",
+        "index": 4,
+        "value": 22
+      }
+    ]
   }
 ]
