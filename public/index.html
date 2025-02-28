@@ -1,263 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>목표 진행 상황</title>
-    <style>
-
-  body {
-      margin: 0;
-      padding: 20px;
-      background-color: #f5f5f5;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-    }
-    .container {
-      width: 600px;
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px 20px 40px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 30px;
-      position: relative;
-    }
-    .header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-    #show-login-btn {
-      position: absolute;
-      right: 0;
-      background-color: #2196F3;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .progress-container {
-      margin-bottom: 20px;
-      padding: 15px;
-      padding-bottom: 35px;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      position: relative;
-    }
-    .progress-title {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .title-text {
-      flex-grow: 1;
-    }
-    .last-modified {
-      font-size: 8pt;
-      color: #FF69B4;
-      margin-left: 8px;
-    }
-    .color-hotpink {
-      color: #FF69B4;
-    }
-    .color-orange {
-      color: #FF8C00;
-    }
-    .color-blue {
-      color: #1E90FF;
-    }
-    .color-red {
-      color: #FF0000;
-    }
-    .progress-details {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-    .progress-bar {
-      height: 25px;
-      background-color: #e0e0e0;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-fill {
-      height: 100%;
-      background-color: #90CAF9;
-      border-radius: 12px;
-      transition: width 0.5s ease-in-out;
-    }
-    .progress-text {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      color: #333;
-      font-weight: bold;
-      line-height: 25px;
-      font-size: 13px;
-    }
-    .marker-container {
-      position: absolute;
-      left: 15px;
-      right: 15px;
-      bottom: 10px;
-      height: 20px;
-      pointer-events: none;
-    }
-    /* 새로 추가된 마커 관련 스타일 */
-    .marker-wrapper {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .modification-marker {
-      position: absolute;
-      width: 2px;
-      height: 8px;
-      background-color: #ff3333;
-      transform: translateX(-50%);
-    }
-    .marker-delete-btn {
-      position: absolute;
-      top: -12px;
-      right: -12px;
-      width: 16px;
-      height: 16px;
-      background-color: #ff3333;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 10px;
-      line-height: 1;
-      cursor: pointer;
-      display: none;
-      padding: 0;
-      margin: 0;
-    }
-    .modification-marker:hover .marker-delete-btn {
-      display: block;
-    }
-    .marker-date {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 8px;
-      color: #666;
-      white-space: nowrap;
-    }
-    .login-container, .admin-panel {
-      background-color: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .hidden {
-      display: none;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input, button, select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    button {
-      background-color: #90CAF9;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #64B5F6;
-    }
-    .error {
-      color: red;
-      margin-top: 10px;
-    }
-    .status-message {
-      margin-top: 10px;
-      padding: 10px;
-      border-radius: 4px;
-      text-align: center;
-    }
-    .success {
-      background-color: #e8f5e9;
-      color: #2e7d32;
-    }
-    .error-message {
-      background-color: #ffebee;
-      color: #c62828;
-    }
-    .admin-panel button {
-      width: auto;
-      margin-top: 5px;
-    }
-    .admin-panel h2 {
-      margin-top: 0;
-    }
-    .color-selector {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-    .color-option {
-      flex: 1;
-      text-align: center;
-      padding: 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      color: white;
-      font-weight: bold;
-    }
-    .color-option.selected {
-      box-shadow: 0 0 0 3px #333;
-    }
-    .color-hotpink-bg {
-      background-color: #FF69B4;
-    }
-    .color-orange-bg {
-      background-color: #FF8C00;
-    }
-    .color-blue-bg {
-      background-color: #1E90FF;
-    }
-    .color-red-bg {
-      background-color: #FF0000;
-    }
-      </style>
-</head>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>목표 진행 상황</title>
   <style>
+@font-face {
+    font-family: 'GowunDodum-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/GowunDodum-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
     body {
       margin: 0;
       padding: 20px;
@@ -321,6 +74,9 @@
       color: #FF69B4;
       margin-left: 8px;
     }
+  </style>
+</head>
+<style>
     .color-hotpink {
       color: #FF69B4;
     }
@@ -346,20 +102,22 @@
       overflow: hidden;
       position: relative;
     }
+    /* 그라데이션 효과를 위한 스타일 수정 */
     .progress-fill {
       height: 100%;
-      background-color: #90CAF9;
+      background: linear-gradient(to right, #90CAF9, #5C6BC0);
       border-radius: 12px;
       transition: width 0.5s ease-in-out;
     }
+    /* 진행률 텍스트 스타일 변경 */
     .progress-text {
       position: absolute;
       width: 100%;
       text-align: center;
-      color: #333;
+      color: #0D47A1;
       font-weight: bold;
       line-height: 25px;
-      font-size: 13px;
+      font-size: 12px;
     }
     .marker-container {
       position: absolute;
@@ -367,7 +125,7 @@
       right: 15px;
       bottom: 10px;
       height: 20px;
-      pointer-events: none;
+      pointer-events: auto;
     }
     .modification-marker {
       position: absolute;
@@ -375,6 +133,7 @@
       height: 8px;
       background-color: #ff3333;
       transform: translateX(-50%);
+      cursor: pointer;
     }
     .marker-date {
       position: absolute;
@@ -384,6 +143,37 @@
       font-size: 8px;
       color: #666;
       white-space: nowrap;
+      cursor: pointer;
+    }
+    /* 마커 수정 폼 */
+    .marker-edit-form {
+      position: absolute;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      padding: 5px;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      width: 200px;
+    }
+  </style>
+
+<style>
+    .marker-edit-form input {
+      width: 120px;
+      font-size: 12px;
+      padding: 4px;
+      margin-bottom: 3px;
+    }
+    .marker-edit-form button {
+      font-size: 11px;
+      padding: 3px 5px;
+      margin: 2px;
+      width: auto;
     }
     .login-container, .admin-panel {
       background-color: white;
@@ -446,6 +236,10 @@
     .admin-panel h2 {
       margin-top: 0;
     }
+  </style>
+
+
+<style>
     .color-selector {
       display: flex;
       gap: 10px;
@@ -475,6 +269,33 @@
     .color-red-bg {
       background-color: #FF0000;
     }
+    /* 마커 리스트 스타일 */
+    .marker-list {
+      margin-top: 10px;
+      padding: 5px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+    .marker-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px;
+      margin-bottom: 3px;
+      background-color: white;
+      border-radius: 3px;
+    }
+    .marker-item button {
+      padding: 2px 5px;
+      margin: 0 2px;
+      font-size: 12px;
+    }
+    .unit-field {
+      display: inline-block;
+      margin-left: 5px;
+    }
   </style>
 </head>
 <body>
@@ -496,8 +317,7 @@
       <button id="cancel-login-btn" style="background-color: #f44336; margin-top: 5px;">취소</button>
       <p id="login-error" class="error hidden">비밀번호가 올바르지 않습니다.</p>
     </div>
-    
-    <div id="admin-panel" class="admin-panel hidden">
+<div id="admin-panel" class="admin-panel hidden">
       <h2>목표 관리</h2>
       
       <div id="edit-form" class="hidden">
@@ -523,6 +343,20 @@
         <div class="form-group">
           <label for="edit-total">전체 목표 횟수:</label>
           <input type="number" id="edit-total" min="1" max="1000">
+        </div>
+        <div class="form-group">
+          <label for="edit-unit">단위:</label>
+          <select id="edit-unit">
+            <option value="번">번</option>
+            <option value="개">개</option>
+            <option value="분">분</option>
+            <option value="페이지">페이지</option>
+            <option value="원">원</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>마커 관리:</label>
+          <div id="edit-markers-container" class="marker-list"></div>
         </div>
         <button id="save-edit-btn">저장</button>
         <button id="cancel-edit-btn" style="background-color: #f44336; margin-top: 5px;">취소</button>
@@ -552,6 +386,16 @@
           <label for="total-count">전체 목표 횟수:</label>
           <input type="number" id="total-count" min="1" max="1000" value="10">
         </div>
+        <div class="form-group">
+          <label for="goal-unit">단위:</label>
+          <select id="goal-unit">
+            <option value="번">번</option>
+            <option value="개">개</option>
+            <option value="분">분</option>
+            <option value="페이지">페이지</option>
+            <option value="원">원</option>
+          </select>
+        </div>
         <button id="add-goal-btn">목표 추가</button>
       </div>
       
@@ -560,6 +404,7 @@
       <button id="logout-btn" style="background-color: #f44336; margin-top: 20px;">로그아웃</button>
     </div>
   </div>
+
 <script>
     const ADMIN_PASSWORD = "2931825";
     const goalsContainer = document.getElementById('goals-container');
@@ -577,11 +422,13 @@
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
     const statusContainer = document.getElementById('status-container');
     const colorOptions = document.querySelectorAll('.color-option');
+    const editMarkersContainer = document.getElementById('edit-markers-container');
 
     let goals = [];
     let currentEditId = null;
     let currentTitleEditId = null;
     let selectedColor = "";
+    let currentMarkerEdit = null;
 
     function init() {
       loadGoals();
@@ -624,7 +471,8 @@
       loginError.classList.add('hidden');
       document.getElementById('password').value = '';
     }
-function attemptLogin() {
+
+    function attemptLogin() {
       const password = document.getElementById('password').value;
       if (password === ADMIN_PASSWORD) {
         sessionStorage.setItem('adminLoggedIn', 'true');
@@ -645,7 +493,7 @@ function attemptLogin() {
       renderGoals();
     }
 
-    function loadGoals() {
+function loadGoals() {
       fetch('/api/goals')
         .then(response => {
           if (!response.ok) {
@@ -654,14 +502,18 @@ function attemptLogin() {
           return response.json();
         })
         .then(data => {
-          goals = data;
+          // 단위가 없는 목표에 기본 단위 추가
+          goals = data.map(goal => {
+            if (!goal.unit) goal.unit = '번';
+            return goal;
+          });
           renderGoals();
         })
         .catch(error => {
           console.error('데이터 로딩 에러:', error);
           goals = [
-            { id: 1, title: "주 3회 운동하기", current: 2, total: 3 },
-            { id: 2, title: "한달 독서 목표", current: 3, total: 10 }
+            { id: 1, title: "주 3회 운동하기", current: 2, total: 3, unit: "번" },
+            { id: 2, title: "한달 독서 목표", current: 3, total: 10, unit: "페이지" }
           ];
           renderGoals();
         });
@@ -709,7 +561,8 @@ function attemptLogin() {
         goalsContainer.innerHTML = '<p style="text-align: center; padding: 20px;">등록된 목표가 없습니다.</p>';
         return;
       }
-goals.forEach(goal => {
+      
+      goals.forEach(goal => {
         const percent = Math.round((goal.current / goal.total) * 100);
         
         const progressContainer = document.createElement('div');
@@ -765,11 +618,11 @@ goals.forEach(goal => {
             titleElement.appendChild(editTitleButton);
           }
         }
-        
-        const detailsElement = document.createElement('div');
+
+const detailsElement = document.createElement('div');
         detailsElement.className = 'progress-details';
         detailsElement.innerHTML = `
-          <span>${goal.current} / ${goal.total} 완료</span>
+          <span>${goal.current} / ${goal.total} <span class="unit-field">${goal.unit || '번'}</span> 완료</span>
           <span>${percent}%</span>
         `;
         
@@ -796,15 +649,31 @@ goals.forEach(goal => {
           const markerContainer = document.createElement('div');
           markerContainer.className = 'marker-container';
           
-          goal.modificationHistory.forEach(mod => {
+          goal.modificationHistory.forEach((mod, index) => {
             const marker = document.createElement('div');
             marker.className = 'modification-marker';
+            marker.dataset.index = index;
+            marker.dataset.goalId = goal.id;
             marker.style.left = `${mod.index}%`;
             
             const date = document.createElement('div');
             date.className = 'marker-date';
+            date.dataset.index = index;
+            date.dataset.goalId = goal.id;
             const modDate = new Date(mod.date);
             date.textContent = `${(modDate.getMonth() + 1).toString().padStart(2, '0')}/${modDate.getDate().toString().padStart(2, '0')}`;
+            
+            // 관리자 로그인 시에만 마커 수정 기능 활성화
+            if (isLoggedIn()) {
+              marker.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startMarkerEdit(goal.id, index);
+              });
+              date.addEventListener('click', (e) => {
+                e.stopPropagation();
+                startMarkerEdit(goal.id, index);
+              });
+            }
             
             marker.appendChild(date);
             markerContainer.appendChild(marker);
@@ -837,6 +706,120 @@ goals.forEach(goal => {
         }
         
         goalsContainer.appendChild(progressContainer);
+      });
+    }
+
+
+// 마커 수정 시작
+    function startMarkerEdit(goalId, markerIndex) {
+      // 이미 다른 마커 편집 폼이 있다면 제거
+      const existingForm = document.querySelector('.marker-edit-form');
+      if (existingForm) existingForm.remove();
+      
+      const goal = goals.find(g => g.id === goalId);
+      if (!goal || !goal.modificationHistory || !goal.modificationHistory[markerIndex]) return;
+      
+      const marker = document.querySelector(`.modification-marker[data-goal-id="${goalId}"][data-index="${markerIndex}"]`);
+      if (!marker) return;
+      
+      // 마커 날짜 정보 가져오기
+      const modData = goal.modificationHistory[markerIndex];
+      const modDate = new Date(modData.date);
+      const formattedDate = `${modDate.getFullYear()}-${String(modDate.getMonth() + 1).padStart(2, '0')}-${String(modDate.getDate()).padStart(2, '0')}`;
+      
+      // 마커 수정 폼 생성
+      const form = document.createElement('div');
+      form.className = 'marker-edit-form';
+      form.innerHTML = `
+        <input type="date" value="${formattedDate}" id="marker-date-${goalId}-${markerIndex}">
+        <button class="save-marker">저장</button>
+        <button class="cancel-marker">취소</button>
+        <button class="delete-marker">삭제</button>
+      `;
+      
+      // 이벤트 리스너 추가
+      form.querySelector('.save-marker').addEventListener('click', () => saveMarkerEdit(goalId, markerIndex));
+      form.querySelector('.cancel-marker').addEventListener('click', () => form.remove());
+      form.querySelector('.delete-marker').addEventListener('click', () => deleteMarker(goalId, markerIndex));
+      
+      marker.appendChild(form);
+      currentMarkerEdit = { goalId, markerIndex };
+    }
+
+    // 마커 수정 저장
+    function saveMarkerEdit(goalId, markerIndex) {
+      const goal = goals.find(g => g.id === goalId);
+      if (!goal || !goal.modificationHistory || !goal.modificationHistory[markerIndex]) return;
+      
+      const dateInput = document.getElementById(`marker-date-${goalId}-${markerIndex}`);
+      if (!dateInput) return;
+      
+      const newDate = new Date(dateInput.value);
+      if (isNaN(newDate.getTime())) return;
+      
+      // 새 날짜로 업데이트
+      goal.modificationHistory[markerIndex].date = newDate.toISOString();
+      
+      // 폼 제거 및 화면 새로고침
+      const form = document.querySelector('.marker-edit-form');
+      if (form) form.remove();
+      
+      saveGoals();
+      renderGoals();
+      currentMarkerEdit = null;
+    }
+
+    // 마커 삭제
+    function deleteMarker(goalId, markerIndex) {
+      const goal = goals.find(g => g.id === goalId);
+      if (!goal || !goal.modificationHistory || !goal.modificationHistory[markerIndex]) return;
+      
+      if (confirm('정말로 이 마커를 삭제하시겠습니까?')) {
+        goal.modificationHistory.splice(markerIndex, 1);
+        const form = document.querySelector('.marker-edit-form');
+        if (form) form.remove();
+        
+        saveGoals();
+        renderGoals();
+        currentMarkerEdit = null;
+      }
+    }
+
+    // 마커 목록 렌더링 (수정 폼에서)
+    function renderMarkers(goalId) {
+      const goal = goals.find(g => g.id === goalId);
+      if (!goal || !goal.modificationHistory || editMarkersContainer === null) return;
+      
+      editMarkersContainer.innerHTML = '';
+      
+      if (goal.modificationHistory.length === 0) {
+        editMarkersContainer.innerHTML = '<div class="empty-markers">마커가 없습니다</div>';
+        return;
+      }
+      
+      goal.modificationHistory.forEach((mod, index) => {
+        const markerDate = new Date(mod.date);
+        const formattedDate = `${markerDate.getFullYear()}-${String(markerDate.getMonth() + 1).padStart(2, '0')}-${String(markerDate.getDate()).padStart(2, '0')}`;
+        
+        const markerItem = document.createElement('div');
+        markerItem.className = 'marker-item';
+        markerItem.innerHTML = `
+          <span>
+            <input type="date" value="${formattedDate}" id="edit-marker-date-${index}">
+            <span>${mod.value}${goal.unit}</span>
+          </span>
+          <button class="delete-marker-btn" data-index="${index}">삭제</button>
+        `;
+        
+        // 삭제 버튼 이벤트 리스너
+        markerItem.querySelector('.delete-marker-btn').addEventListener('click', () => {
+          if (confirm('정말로 이 마커를 삭제하시겠습니까?')) {
+            goal.modificationHistory.splice(index, 1);
+            renderMarkers(goalId);
+          }
+        });
+        
+        editMarkersContainer.appendChild(markerItem);
       });
     }
 
@@ -878,11 +861,13 @@ goals.forEach(goal => {
       renderGoals();
     }
 
-    function addGoal() {
+
+function addGoal() {
       const title = document.getElementById('goal-title').value.trim();
       const color = document.getElementById('goal-color').value;
       const current = parseInt(document.getElementById('current-count').value);
       const total = parseInt(document.getElementById('total-count').value);
+      const unit = document.getElementById('goal-unit').value;
 
       if (!title) {
         alert('목표 제목을 입력하세요.');
@@ -911,6 +896,7 @@ goals.forEach(goal => {
         color,
         current,
         total,
+        unit,
         lastModified,
         modificationHistory: [{
           date: lastModified,
@@ -947,6 +933,10 @@ goals.forEach(goal => {
       document.getElementById('edit-color').value = goal.color || "";
       document.getElementById('edit-current').value = goal.current;
       document.getElementById('edit-total').value = goal.total;
+      document.getElementById('edit-unit').value = goal.unit || "번";
+      
+      // 마커 목록 렌더링
+      renderMarkers(id);
       
       editForm.classList.remove('hidden');
       addForm.classList.add('hidden');
@@ -959,6 +949,7 @@ goals.forEach(goal => {
       const color = document.getElementById('edit-color').value;
       const current = parseInt(document.getElementById('edit-current').value);
       const total = parseInt(document.getElementById('edit-total').value);
+      const unit = document.getElementById('edit-unit').value;
 
       if (!title) {
         alert('목표 제목을 입력하세요.');
@@ -979,27 +970,56 @@ goals.forEach(goal => {
 
       const goalIndex = goals.findIndex(g => g.id === currentEditId);
       if (goalIndex >= 0) {
-        const percent = Math.round((current / total) * 100);
-        const lastModified = new Date().toISOString();
-
-        // 수정 이력 추가
-        if (!goals[goalIndex].modificationHistory) {
-          goals[goalIndex].modificationHistory = [];
-        }
+        const goal = goals[goalIndex];
+        const oldCurrent = goal.current;
         
-        goals[goalIndex].modificationHistory.push({
-          date: lastModified,
-          index: percent,
-          value: current
-        });
+        // 현재 값이 변경되었을 때만 마커 이력 추가
+        if (current !== oldCurrent) {
+          const percent = Math.round((current / total) * 100);
+          const lastModified = new Date().toISOString();
+          
+          // 수정 이력 배열이 없으면 생성
+          if (!goal.modificationHistory) {
+            goal.modificationHistory = [];
+          }
+          
+          // 마커 일자 수정 적용
+          editMarkersContainer.querySelectorAll('input[type="date"]').forEach((input, index) => {
+            if (goal.modificationHistory[index]) {
+              const newDate = new Date(input.value);
+              if (!isNaN(newDate.getTime())) {
+                goal.modificationHistory[index].date = newDate.toISOString();
+              }
+            }
+          });
+          
+          // 새 마커 추가
+          goal.modificationHistory.push({
+            date: lastModified,
+            index: percent,
+            value: current
+          });
+        } else {
+          // 현재 값은 변경 없지만, 마커 일자 수정은 적용
+          editMarkersContainer.querySelectorAll('input[type="date"]').forEach((input, index) => {
+            if (goal.modificationHistory && goal.modificationHistory[index]) {
+              const newDate = new Date(input.value);
+              if (!isNaN(newDate.getTime())) {
+                goal.modificationHistory[index].date = newDate.toISOString();
+              }
+            }
+          });
+        }
 
+        // 목표 정보 업데이트
         goals[goalIndex] = {
-          ...goals[goalIndex],
+          ...goal,
           title,
           color,
           current,
           total,
-          lastModified
+          unit,
+          lastModified: new Date().toISOString()
         };
         
         saveGoals();
